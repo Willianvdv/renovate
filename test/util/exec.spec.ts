@@ -156,7 +156,7 @@ describe(`Child process execution wrapper`, () => {
         inOpts: { docker, cwd },
         outCmd: [
           dockerPullCmd,
-          `docker run --rm ${defaultVolumes} ${defaultCwd} ${image} bash -l -c "${inCmd}"`,
+          `docker run --rm ${defaultVolumes} ${defaultCwd} ${image} bash -l -x -c  "${inCmd}"`,
         ],
         outOpts: [dockerPullOpts, { cwd, encoding, env: envMock.basic }],
       },
@@ -199,7 +199,7 @@ describe(`Child process execution wrapper`, () => {
         },
         outCmd: [
           dockerPullCmd,
-          `docker run --rm ${defaultVolumes} -e SELECTED_ENV_VAR ${defaultCwd} ${image} bash -l -c "${inCmd}"`,
+          `docker run --rm ${defaultVolumes} -e SELECTED_ENV_VAR ${defaultCwd} ${image} bash -l -x -c "${inCmd}"`,
         ],
         outOpts: [dockerPullOpts, { cwd, encoding, env: envMock.filtered }],
       },
@@ -236,7 +236,7 @@ describe(`Child process execution wrapper`, () => {
         },
         outCmd: [
           dockerPullCmd,
-          `docker run --rm ${defaultVolumes} -e SELECTED_ENV_VAR ${defaultCwd} ${image} bash -l -c "${inCmd}"`,
+          `docker run --rm ${defaultVolumes} -e SELECTED_ENV_VAR ${defaultCwd} ${image} bash -l -x -c "${inCmd}"`,
         ],
         outOpts: [
           dockerPullOpts,
@@ -258,7 +258,7 @@ describe(`Child process execution wrapper`, () => {
         inOpts: { docker: { image, tag }, cwd },
         outCmd: [
           `${dockerPullCmd}:${tag}`,
-          `docker run --rm ${defaultVolumes} ${defaultCwd} ${image}:${tag} bash -l -c "${inCmd}"`,
+          `docker run --rm ${defaultVolumes} ${defaultCwd} ${image}:${tag} bash -l -x -c "${inCmd}"`,
         ],
         outOpts: [dockerPullOpts, { cwd, encoding, env: envMock.basic }],
       },
@@ -292,7 +292,7 @@ describe(`Child process execution wrapper`, () => {
         inOpts: { docker },
         outCmd: [
           dockerPullCmd,
-          `docker run --rm --user=foobar ${defaultVolumes} -w "${cwd}" ${image} bash -l -c "${inCmd}"`,
+          `docker run --rm --user=foobar ${defaultVolumes} -w "${cwd}" ${image} bash -l -x -c "${inCmd}"`,
         ],
         outOpts: [dockerPullOpts, { cwd, encoding, env: envMock.basic }],
       },
@@ -316,7 +316,7 @@ describe(`Child process execution wrapper`, () => {
         },
         outCmd: [
           dockerPullCmd,
-          `docker run --rm ${defaultVolumes} -w "${cwd}" ${image} bash -l -c "preCommand1 && preCommand2 && ${inCmd} && postCommand1 && postCommand2"`,
+          `docker run --rm ${defaultVolumes} -w "${cwd}" ${image} bash -l -x -c "preCommand1 && preCommand2 && ${inCmd} && postCommand1 && postCommand2"`,
         ],
         outOpts: [dockerPullOpts, { cwd, encoding, env: envMock.basic }],
       },
@@ -340,7 +340,7 @@ describe(`Child process execution wrapper`, () => {
         },
         outCmd: [
           dockerPullCmd,
-          `docker run --rm ${defaultVolumes} -w "${cwd}" ${image} bash -l -c "${inCmd}"`,
+          `docker run --rm ${defaultVolumes} -w "${cwd}" ${image} bash -l -x -c "${inCmd}"`,
         ],
         outOpts: [dockerPullOpts, { cwd, encoding, env: envMock.basic }],
       },
@@ -406,9 +406,9 @@ describe(`Child process execution wrapper`, () => {
     expect(actualCmd).toEqual([
       ...repeat(inCmd),
       dockerPullCmd,
-      ...repeat(`docker run --rm ${image} bash -l -c "${inCmd}"`),
+      ...repeat(`docker run --rm ${image} bash -l -x -c "${inCmd}"`),
       ...repeat(inCmd),
-      ...repeat(`docker run --rm ${image} bash -l -c "${inCmd}"`),
+      ...repeat(`docker run --rm ${image} bash -l -x -c "${inCmd}"`),
     ]);
   });
 });
